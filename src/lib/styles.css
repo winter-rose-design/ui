@@ -1,13 +1,5 @@
 /* RESET */
 
-*,
-*::before,
-*::after {
-	box-sizing: border-box;
-	padding: 0;
-	margin: 0;
-}
-
 html,
 body {
 	height: 100%;
@@ -18,49 +10,58 @@ html:focus-within {
 	scroll-behavior: smooth;
 }
 
-body {
+.sui {
 	line-height: 1.5;
-}
 
-a:not([class]) {
-	text-decoration-skip-ink: auto;
-}
+	& *,
+	& *::before,
+	& *::after {
+		box-sizing: border-box;
+		padding: 0;
+		margin: 0;
+	}
 
-img,
-picture,
-video,
-canvas {
-	display: block;
-	max-width: 100%;
-}
+	& a:not([class]) {
+		text-decoration-skip-ink: auto;
+	}
 
-input,
-button,
-textarea,
-select,
-input[type='file']::file-selector-button {
-	font: inherit;
-}
+	& img,
+	& picture,
+	& video,
+	& canvas {
+		display: block;
+		max-width: 100%;
+	}
 
-label,
-textarea,
-progress,
-input:where(
-		[type='email'],
-		[type='password'],
-		[type='search'],
-		[type='tel'],
-		[type='text'],
-		[type='url'],
-		[type='file']
-	) {
-	display: block;
-	width: 100%;
-}
+	& input,
+	& button,
+	& textarea,
+	& select,
+	& input[type='file']::file-selector-button {
+		font: inherit;
+	}
 
-textarea {
-	box-sizing: content-box;
-	min-height: 5em;
-	resize: block;
-	resize: vertical;
+	& label,
+	& textarea,
+	& progress,
+	&
+		input:where(
+			[type='email'],
+			[type='password'],
+			[type='search'],
+			[type='tel'],
+			[type='text'],
+			[type='url'],
+			[type='file']
+		) {
+		display: block;
+		width: 100%;
+	}
+
+	& textarea {
+		box-sizing: content-box;
+		min-height: 5em;
+		resize: block;
+		resize: vertical;
+	}
 }
