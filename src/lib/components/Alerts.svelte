@@ -178,16 +178,16 @@
 		left: 0;
 		width: 100%;
 		pointer-events: none;
-	}
 
-	.alerts.--start {
-		inset-block-start: 0;
-		flex-direction: column-reverse;
-	}
+		&.--start {
+			inset-block-start: 0;
+			flex-direction: column-reverse;
+		}
 
-	.alerts.--end {
-		inset-block-end: 0;
-		flex-direction: column;
+		&.--end {
+			inset-block-end: 0;
+			flex-direction: column;
+		}
 	}
 
 	.alert {
@@ -265,19 +265,19 @@
 		border-radius: 50%;
 
 		transition: opacity, 100ms;
-	}
 
-	.dismiss-btn > .icon {
-		font-size: 1rem;
-		stroke-width: 0.2rem;
-	}
+		& > .icon {
+			font-size: 1rem;
+			stroke-width: 0.2rem;
+		}
 
-	.dismiss-btn:hover {
-		opacity: 1;
-		background-color: hsla(0, 0%, 0%, 0.1);
-	}
+		&:hover {
+			opacity: 1;
+			background-color: hsla(0, 0%, 0%, 0.1);
+		}
 
-	.dismiss-btn:active {
-		background-color: hsla(0, 0%, 0%, 0.2);
+		&:active {
+			background-color: hsla(0, 0%, 0%, 0.2);
+		}
 	}
 </style>
