@@ -1,60 +1,66 @@
 <script context="module">
+	import { flip } from 'svelte/animate';
+	import { fly, scale } from 'svelte/transition';
+	import { setContext, getContext } from 'svelte';
 	import { writable } from 'svelte/store';
 
-	function create_store() {
+	export function get() {
+		return getContext('sunflower:alerts');
+	}
+
+	function create_alerts_store(opts) {
 		const { subscribe, update } = writable([]);
+
+		function show({
+			type,
+			message,
+			timeout = opts.timeout,
+			show_dismiss_button = opts.show_dismiss_button
+		}) {
+			update((alerts) => [
+				...alerts.slice(-1 * (this.max - 1)),
+				{ type, message, timeout, show_dismiss_button }
+			]);
+		}
+
+		function info(message, timeout) {
+			show({ type: 'info', message, timeout });
+		}
+
+		function success(message, timeout) {
+			show({ type: 'success', message, timeout });
+		}
+
+		function failure(message, timeout) {
+			show({ type: 'failure', message, timeout });
+		}
+
+		function warning(message, timeout) {
+			show({ type: 'warning', message, timeout });
+		}
+
+		function promise() {}
+
+		function dismiss(alert) {
+			update((alerts) => alerts.filter((a) => a !== alert));
+		}
+
+		function dismiss_all() {
+			update(() => []);
+		}
 
 		return {
 			subscribe,
 
-			max: 3,
-			dismiss_after: 5000,
-			dismiss_button: false,
-
-			show({
-				type,
-				message,
-				dismiss_after = this.dismiss_after,
-				dismiss_button = this.dismiss_button
-			}) {
-				update((alerts) => [
-					...alerts.slice(-1 * (this.max - 1)),
-					{ type, message, dismiss_after, dismiss_button }
-				]);
-			},
-
-			info(message, dismiss_after) {
-				this.show({ type: 'info', message, dismiss_after });
-			},
-
-			success(message, dismiss_after) {
-				this.show({ type: 'success', message, dismiss_after });
-			},
-
-			failure(message, dismiss_after) {
-				this.show({ type: 'failure', message, dismiss_after });
-			},
-
-			promise() {},
-
-			dismiss(alert) {
-				update((alerts) => alerts.filter((a) => a !== alert));
-			},
-
-			dismiss_all() {
-				update(() => []);
-			}
+			info,
+			success,
+			failure,
+			warning,
+			promise,
+			dismiss,
+			dismiss_all
 		};
 	}
-
-	export const alerts = create_store();
-</script>
-
-<script>
-	import { flip } from 'svelte/animate';
-	import { fly, scale } from 'svelte/transition';
-
-	export let position = 'start';
 
 	function create_timer(cb, delay) {
 		let start;
@@ -83,8 +89,8 @@
 		};
 	}
 
-	function dismiss_after(node, alert) {
-		if (!alert.dismiss_after) return;
+	function alert(node, alert) {
+		if (!alert.timeout) return;
 
 		function on_mouseenter(e) {
 			mouse_over_elements.add(e.target);
@@ -104,7 +110,7 @@
 		node.addEventListener('mouseenter', on_mouseenter);
 		node.addEventListener('mouseleave', on_mouseleave);
 
-		timer = create_timer(() => alerts.dismiss(alert), alert.dismiss_after);
+		timer = create_timer(() => alerts.dismiss(alert), alert.timeout);
 
 		return {
 			destroy() {
@@ -116,27 +122,38 @@
 	}
 </script>
 
+<script>
+	export let max = 3;
+	export let position = 'start';
+	export let show_dismiss_button = false;
+	export let timeout = 5000;
+
+	const alerts_store = create_alerts_store({ max, show_dismiss_button, timeout });
+
+	setContext('sunflower:alerts', alerts_store);
+</script>
+
 <div class="alerts --{position}">
-	{#each $alerts as alert (alert)}
+	{#each $alerts_store as item (item)}
 		<div
 			role="alert"
-			class="alert --{alert.type}"
-			use:dismiss_after={alert}
-			animate:flip={{ duration: 200 }}
+			class="alert --{item.type}"
+			use:alert={item}
 			in:fly={{ y: 15 * (position === 'start' ? -1 : 1), duration: 200 }}
 			out:scale={{ duration: 200, start: 0.95 }}
+			animate:flip={{ duration: 200 }}
 		>
-			{#if alert.type === 'success'}
+			{#if item.type === 'success'}
 				<svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
 					<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
 					<polyline points="22 4 12 14.01 9 11.01" />
 				</svg>
-			{:else if alert.type === 'failure'}
+			{:else if item.type === 'failure'}
 				<svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
 					<circle cx="12" cy="12" r="10" />
 					<line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
 				</svg>
-			{:else if alert.type === 'info'}
+			{:else if item.type === 'info'}
 				<svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
 					<line x1="9" y1="18" x2="15" y2="18" />
 					<line x1="10" y1="22" x2="14" y2="22" />
@@ -146,14 +163,14 @@
 				</svg>
 			{/if}
 
-			<div class="message">{@html alert.message}</div>
+			<div class="message">{@html item.message}</div>
 
-			{#if alert.dismiss_button}
+			{#if item.show_dismiss_button}
 				<button
 					type="button"
 					aria-label="Dismiss"
 					class="dismiss-btn"
-					on:click={() => alerts.dismiss(alert)}
+					on:click={() => alerts_store.dismiss(item)}
 				>
 					<svg aria-hidden="true" viewBox="0 0 24 24" class="icon">
 						<line x1="18" y1="6" x2="6" y2="18" />
