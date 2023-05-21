@@ -191,40 +191,48 @@
 	}
 
 	.alert {
+		--color: white;
+
+		--info-bg-color: hsl(196, 52%, 48%);
+		--success-bg-color: hsl(171, 71%, 40%);
+		--failure-bg-color: hsl(18, 100%, 60%);
+		--warning-bg-color: hsl(333, 81%, 40%);
+
+		color: var(--color);
+		line-height: 1.5;
+		font-weight: 500;
+		font-family: sans-serif;
+
 		padding: 0.75rem;
 		border-radius: 0.25rem;
 		margin-block: 0.25rem;
 		margin-inline: auto;
-		font-family: sans-serif;
-		font-weight: 500;
-		line-height: 1.5;
-		color: white;
 		display: flex;
 		align-items: center;
 		pointer-events: auto;
 		box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 
 		transition: scale 100ms;
-	}
 
-	.alert:hover {
-		scale: 1.02;
-	}
+		&:hover {
+			scale: 1.02;
+		}
 
-	.alert.--info {
-		background-color: #3a98b9;
-	}
+		&.--info {
+			background-color: var(--info-bg-color);
+		}
 
-	.alert.--success {
-		background-color: hsl(171, 71%, 40%);
-	}
+		&.--success {
+			background-color: var(--info-bg-color);
+		}
 
-	.alert.--warning {
-		background-color: #ff6e31;
-	}
+		&.--warning {
+			background-color: var(--warning-bg-color);
+		}
 
-	.alert.--failure {
-		background-color: hsl(333, 81%, 40%);
+		&.--failure {
+			background-color: var(--failure-bg-color);
+		}
 	}
 
 	.icon {
