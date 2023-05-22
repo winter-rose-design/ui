@@ -27,7 +27,7 @@ jobs:
 
       - name: build
         env:
-          BASE_PATH: '/sunflower-ui'
+          BASE_PATH: '/ui'
         run: |
           pnpm build
           touch build/.nojekyll
