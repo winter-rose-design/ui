@@ -12,14 +12,18 @@ export default function form(form_element) {
 
 		e.target.dispatchEvent(new CustomEvent('form-submission-start', { bubbles: true }));
 
+		e.submitter?.classList.add('--loading');
+
 		const response = await fetch(e.target.getAttribute('action'), {
 			method: e.target.getAttribute('method'),
 			body: new FormData(e.target)
 		});
 
-		e.target.dispatchEvent(new CustomEvent('form-submission-end', { bubbles: true }));
-
 		const json = await response.json();
+
+		e.submitter?.classList.add('--loading');
+
+		e.target.dispatchEvent(new CustomEvent('form-submission-end', { bubbles: true }));
 
 		e.target.dispatchEvent(new CustomEvent('form-response', { bubbles: true, detail: { json } }));
 	}
