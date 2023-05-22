@@ -2,7 +2,7 @@
 export default function form(form_element) {
 	form_element.setAttribute('novalidate', true);
 
-	/** @param {SubmitEvent} event */
+	/** @param {SubmitEvent} e */
 	async function handle_submit(e) {
 		e.preventDefault();
 
