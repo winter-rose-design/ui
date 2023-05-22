@@ -1,5 +1,13 @@
-/** @param {HTMLFormElement} form_element */
-export default function form(form_element) {
+/**
+ * @callback FormCallback
+ * @returns {void}
+ */
+
+/** 
+ * @param {HTMLFormElement} form_element
+ * @param {FormCallback} callback
+ */
+export default function form(form_element, callback) {
 	form_element.setAttribute('novalidate', true);
 
 	/** @param {SubmitEvent} e */
