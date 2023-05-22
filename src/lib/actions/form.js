@@ -21,7 +21,7 @@ export default function form(form_element) {
 
 		const json = await response.json();
 
-		e.submitter?.classList.add('--loading');
+		e.submitter?.classList.remove('--loading');
 
 		e.target.dispatchEvent(new CustomEvent('form-submission-end', { bubbles: true }));
 
