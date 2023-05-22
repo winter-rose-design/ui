@@ -1,4 +1,4 @@
-# Sunflower UI 🌻
+# UI 🌹
 
 an experimental UI library for Svelte
 
