@@ -8,7 +8,10 @@ export default function form(form_element) {
 
 		const is_valid = validate();
 
-		if (!is_valid) return;
+		if (!is_valid) {
+			e.target.dispatchEvent(new CustomEvent('form-invalid', { bubbles: true }));
+			return;
+		}
 
 		e.target.dispatchEvent(new CustomEvent('form-submission-start', { bubbles: true }));
 
