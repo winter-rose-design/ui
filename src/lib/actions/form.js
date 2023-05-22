@@ -6,7 +6,7 @@ export default function form(form_element) {
 	async function handle_submit(e) {
 		e.preventDefault();
 
-		const is_valid = true;
+		const is_valid = validate();
 
 		if (!is_valid) return;
 
@@ -26,3 +26,5 @@ export default function form(form_element) {
 
 	form_element.addEventListener('submit', handle_submit);
 }
+
+function validate() {}
