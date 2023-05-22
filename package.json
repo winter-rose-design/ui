@@ -1,6 +1,17 @@
 {
 	"name": "sunflower-ui",
 	"version": "0.0.1",
+	"license": "MIT",
+	"author": "Karim Jordan",
+	"homepage": "https://karimfromjordan.github.io/sunflower-ui/",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/karimfromjordan/sunflower-ui.git"
+	},
+	"keywords": [
+		"Svelte",
+		"UI"
+	],
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
