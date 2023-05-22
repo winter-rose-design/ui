@@ -12,7 +12,10 @@ export default function form(form_element) {
 
 		event.target.dispatchEvent(new CustomEvent('form:submission:start', { bubbles: true }));
 
-		const response = await fetch(event.target.getAttribute('action'), new FormData(event.target));
+		const response = await fetch(event.target.getAttribute('action'), {
+			method: event.target.getAttribute('method'),
+			body: new FormData(event.target)
+		});
 
 		event.target.dispatchEvent(new CustomEvent('form:submission:end', { bubbles: true }));
 
