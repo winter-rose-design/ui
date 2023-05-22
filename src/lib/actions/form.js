@@ -19,7 +19,7 @@ export default function form(form_element) {
 
 		event.target.dispatchEvent(new CustomEvent('form-submission-end', { bubbles: true }));
 
-		const json = response.ok ? await response.json() : null;
+		const json = await response.json();
 
 		event.target.dispatchEvent(
 			new CustomEvent('form-response', { bubbles: true, detail: { json } })
