@@ -1,4 +1,4 @@
-/** @param {HTMLElement} form_element */
+/** @param {HTMLFormElement} form_element */
 export default function form(form_element) {
 	form_element.setAttribute('novalidate', true);
 
