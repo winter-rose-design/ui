@@ -1,9 +1,8 @@
-/* RESET */
+/* Reset */
 
 html,
 body {
 	height: 100%;
-	font-family: sans-serif;
 }
 
 html:focus-within {
@@ -12,6 +11,7 @@ html:focus-within {
 
 .sui {
 	line-height: 1.5;
+	font-family: sans-serif;
 
 	& *,
 	& *::before,
@@ -65,3 +65,5 @@ html:focus-within {
 		resize: vertical;
 	}
 }
+
+/* Utility Classes */
