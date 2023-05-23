@@ -1,5 +1,5 @@
 <script>
-	import '../styles.css';
+	import '$lib/styles.css';
 
 	/** @param {HTMLElement} node */
 	function js(node) {
@@ -9,7 +9,15 @@
 
 <div class="sui no-js" use:js>
 	<slot name="icons">
-		
+		<svg style="display:none;">
+			<!-- Icons from https://lucide.dev/ -->
+			<defs>
+				<symbol id="ui-icon-arrow" viewBox="0 0 24 24">
+					<line x1="12" x2="12" y1="19" y2="5" />
+					<polyline points="5 12 12 5 19 12" />
+				</symbol>
+			</defs>
+		</svg>
 	</slot>
 
 	<slot />
