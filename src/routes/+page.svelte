@@ -1,5 +1,5 @@
 <script>
-	import { Alerts, Context } from '$lib/components';
+	import { Alerts, Context, Icon } from '$lib/components';
 </script>
 
 <Context>
@@ -9,7 +9,10 @@
 		<main>
 			<h1>UI</h1>
 
-      <h2>Alerts</h2>
+			<h2>Icon</h2>
+			<Icon name="arrow" />
+			
+			<h2>Alerts</h2>
 		</main>
 	</div>
 </Context>

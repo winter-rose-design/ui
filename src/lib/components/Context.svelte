@@ -7,7 +7,7 @@
 	}
 </script>
 
-<div class="sui no-js" use:js>
+<div class="ui no-js" use:js>
 	<slot name="icons">
 		<svg style="display:none;">
 			<!-- Icons from https://lucide.dev/ -->
