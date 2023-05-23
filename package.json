@@ -24,6 +24,10 @@
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"exports": {
+		"./actions": {
+			"types": "./dist/actions/index.d.ts",
+			"svelte": "./dist/actions/index.js"
+		},
 		"./components": {
 			"types": "./dist/components/index.d.ts",
 			"svelte": "./dist/components/index.js"
