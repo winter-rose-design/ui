@@ -1,10 +1,11 @@
 <script>
 	export let name;
-	export let size;
-	export let background;
+	export let size = '';
+	export let color = '';
+	export let background = '';
 </script>
 
-<div class="ui icon --has-background">
+<div class="ui icon" class:--has-background={background} style:color style:background>
 	<svg aria-hidden="true">
 		<use xlink:href="#ui-icon-{name}" />
 	</svg>
@@ -13,9 +14,11 @@
 <style>
 	.ui.icon {
 		border-radius: 50%;
+		display: inline-block;
 	}
 
 	.ui.icon svg {
+		display: block;
 		width: 1.5em;
 		height: 1.5em;
 		fill: none;
@@ -26,8 +29,6 @@
 	}
 
 	.ui.icon.--has-background {
-		display: inline-flex;
 		padding: 0.5em;
-		background-color: beige;
 	}
 </style>

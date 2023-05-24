@@ -11,7 +11,7 @@
 
 			<h2>Icon</h2>
 			<Icon name="arrow" />
-			
+
 			<h2>Alerts</h2>
 		</main>
 	</div>
