@@ -19,8 +19,8 @@
 
 	.ui.icon svg {
 		display: block;
-		width: 1.5em;
-		height: 1.5em;
+		inline-size: 1.5em;
+		block-size: 1.5em;
 		fill: none;
 		stroke: currentColor;
 		stroke-width: 2;
