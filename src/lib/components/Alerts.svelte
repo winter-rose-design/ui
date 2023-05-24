@@ -3,6 +3,7 @@
 	import { fly, scale } from 'svelte/transition';
 	import { setContext, getContext } from 'svelte';
 	import { writable } from 'svelte/store';
+	import { Icon } from '$lib/components';
 
 	export function get() {
 		return getContext('sunflower:alerts');
@@ -143,25 +144,7 @@
 			out:scale={{ duration: 200, start: 0.95 }}
 			animate:flip={{ duration: 200 }}
 		>
-			{#if item.type === 'success'}
-				<svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
-					<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-					<polyline points="22 4 12 14.01 9 11.01" />
-				</svg>
-			{:else if item.type === 'failure'}
-				<svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
-					<circle cx="12" cy="12" r="10" />
-					<line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
-				</svg>
-			{:else if item.type === 'info'}
-				<svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
-					<line x1="9" y1="18" x2="15" y2="18" />
-					<line x1="10" y1="22" x2="14" y2="22" />
-					<path
-						d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"
-					/>
-				</svg>
-			{/if}
+			<Icon name={item.type} />
 
 			<div class="message">{@html item.message}</div>
 
@@ -172,10 +155,7 @@
 					class="dismiss-btn"
 					on:click={() => alerts_store.dismiss(item)}
 				>
-					<svg aria-hidden="true" viewBox="0 0 24 24" class="icon">
-						<line x1="18" y1="6" x2="6" y2="18" />
-						<line x1="6" y1="6" x2="18" y2="18" />
-					</svg>
+					<Icon name="x" />
 				</button>
 			{/if}
 		</div>
@@ -183,10 +163,6 @@
 </div>
 
 <style>
-	* {
-		box-sizing: border-box;
-	}
-
 	.alerts {
 		display: flex;
 		padding: 0 1em;
@@ -250,17 +226,6 @@
 		&.--failure {
 			background-color: var(--failure-bg-color);
 		}
-	}
-
-	.icon {
-		inline-size: 1em;
-		block-size: 1em;
-		font-size: 1.5rem;
-		fill: none;
-		stroke: currentColor;
-		stroke-width: 0.125rem;
-		stroke-linecap: round;
-		stroke-linejoin: round;
 	}
 
 	.message {
