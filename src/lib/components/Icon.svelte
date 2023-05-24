@@ -5,30 +5,31 @@
 	export let background = '';
 </script>
 
-<div class="ui icon" class:--has-background={background} style:color style:background>
+<div class="icon" class:--has-background={background} style:color style:background>
 	<svg aria-hidden="true">
 		<use xlink:href="#ui-icon-{name}" />
 	</svg>
 </div>
 
 <style>
-	.ui.icon {
+	.icon {
 		border-radius: 50%;
 		display: inline-block;
+
+		& svg {
+			display: block;
+			inline-size: 1.5em;
+			block-size: 1.5em;
+			fill: none;
+			stroke: currentColor;
+			stroke-width: 2;
+			stroke-linecap: round;
+			stroke-linejoin: round;
+		}
+    
+    & --has-background {
+      padding: 0.5em;
+    }
 	}
 
-	.ui.icon svg {
-		display: block;
-		inline-size: 1.5em;
-		block-size: 1.5em;
-		fill: none;
-		stroke: currentColor;
-		stroke-width: 2;
-		stroke-linecap: round;
-		stroke-linejoin: round;
-	}
-
-	.ui.icon.--has-background {
-		padding: 0.5em;
-	}
 </style>
