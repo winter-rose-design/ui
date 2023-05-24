@@ -5,7 +5,7 @@
 	export let background = '';
 </script>
 
-<div class="icon" class:--has-background={background} style:color style:background>
+<div class="icon" class:--has-background={background} style:background style:color>
 	<svg aria-hidden="true">
 		<use xlink:href="#ui-icon-{name}" />
 	</svg>
@@ -26,10 +26,9 @@
 			stroke-linecap: round;
 			stroke-linejoin: round;
 		}
-    
-    & --has-background {
-      padding: 0.5em;
-    }
-	}
 
+		&.--has-background {
+			padding: 0.5em;
+		}
+	}
 </style>
