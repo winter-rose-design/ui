@@ -232,7 +232,7 @@
 		background-color: var(--alert-failure-background);
 	}
 
-	.alert .alert__body {
+	.alert__body {
 		margin-inline: 0.75rem;
 	}
 
