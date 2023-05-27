@@ -17,7 +17,7 @@
 			body,
 			style = '',
 			timeout = opts.timeout,
-			show_close_button = opts.show_close_button,
+			show_close_button = opts.show_close_button
 		}) {
 			update((alerts) => [
 				...alerts.slice(-1 * (this.max - 1)),
@@ -135,7 +135,7 @@
 	setContext('sunflower:alerts', alerts_store);
 </script>
 
-<div class="alerts --{position}">
+<div class="alert-container --{position}">
 	{#each $alerts_store as item (item)}
 		<div
 			role="alert"
@@ -148,7 +148,7 @@
 		>
 			<Icon name={item.type} />
 
-			<div class="body">{@html item.body}</div>
+			<div class="alert__body">{@html item.body}</div>
 
 			{#if item.show_close_button}
 				{@const id = crypto.randomUUID()}
@@ -156,7 +156,7 @@
 				<button
 					type="button"
 					aria-labelledby={id}
-					class="close-btn"
+					class="alert__close-btn"
 					on:click={() => alerts_store.close(item)}
 				>
 					<Icon name="x" />
@@ -168,24 +168,24 @@
 </div>
 
 <style>
-	.alerts {
+	:global(.js) .alert-container {
+		position: fixed;
 		display: flex;
 		padding: 0 1em;
 		margin: 0;
-		position: fixed;
 		left: 0;
 		width: 100%;
 		pointer-events: none;
+	}
 
-		&.--start {
-			inset-block-start: 0;
-			flex-direction: column-reverse;
-		}
+	:global(.js) .alert-container.--start {
+		inset-block-start: 0;
+		flex-direction: column-reverse;
+	}
 
-		&.--end {
-			inset-block-end: 0;
-			flex-direction: column;
-		}
+	:global(.js) .alert-container.--end {
+		inset-block-end: 0;
+		flex-direction: column;
 	}
 
 	.alert {
@@ -210,52 +210,53 @@
 		box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 
 		transition: scale 100ms;
-
-		&:hover {
-			scale: 1.02;
-		}
-
-		&.--info {
-			background-color: var(--alert-info-background);
-		}
-
-		&.--success {
-			background-color: var(--alert-success-background);
-		}
-
-		&.--warning {
-			background-color: var(--alert-warning-background);
-		}
-
-		&.--failure {
-			background-color: var(--alert-failure-background);
-		}
-
-		& .body {
-			margin-inline: 0.75rem;
-		}
 	}
 
-	.close-btn {
+	.alert:hover {
+		scale: 1.02;
+	}
+
+	.alert.--info {
+		background-color: var(--alert-info-background);
+	}
+
+	.alert.--success {
+		background-color: var(--alert-success-background);
+	}
+
+	.alert.--warning {
+		background-color: var(--alert-warning-background);
+	}
+
+	.alert.--failure {
+		background-color: var(--alert-failure-background);
+	}
+
+	.alert .alert__body {
+		margin-inline: 0.75rem;
+	}
+
+	.alert__close-btn {
+		display: none;
 		padding: 0.25rem;
 		border: none;
-		margin: 0;
 		appearance: none;
-		display: grid;
-		place-items: center;
 		background: none;
 		opacity: 0.8;
-		border-radius: 50%;
 
 		transition: opacity, 100ms;
+	}
 
-		&:hover {
-			opacity: 1;
-			background-color: hsla(0, 0%, 0%, 0.1);
-		}
+	:global(.js) .alert__close-btn {
+		display: inline-block;
+	}
 
-		&:active {
-			background-color: hsla(0, 0%, 0%, 0.2);
-		}
+	.alert__close-btn:hover {
+		opacity: 1;
+		background-color: hsla(0, 0%, 0%, 0.1);
+	}
+
+	.alert__close-btn:active {
+		background-color: hsla(0, 0%, 0%, 0.2);
 	}
 </style>
