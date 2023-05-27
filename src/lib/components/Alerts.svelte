@@ -14,31 +14,31 @@
 
 		function show({
 			type,
-			message,
+			body,
+			style = '',
 			timeout = opts.timeout,
 			show_close_button = opts.show_close_button,
-			style = ''
 		}) {
 			update((alerts) => [
 				...alerts.slice(-1 * (this.max - 1)),
-				{ type, message, timeout, show_close_button }
+				{ type, body, style, timeout, show_close_button }
 			]);
 		}
 
-		function info(message, timeout) {
-			show({ type: 'info', message, timeout });
+		function info(body, timeout) {
+			show({ type: 'info', body, timeout });
 		}
 
-		function success(message, timeout) {
-			show({ type: 'success', message, timeout });
+		function success(body, timeout) {
+			show({ type: 'success', body, timeout });
 		}
 
-		function failure(message, timeout) {
-			show({ type: 'failure', message, timeout });
+		function failure(body, timeout) {
+			show({ type: 'failure', body, timeout });
 		}
 
-		function warning(message, timeout) {
-			show({ type: 'warning', message, timeout });
+		function warning(body, timeout) {
+			show({ type: 'warning', body, timeout });
 		}
 
 		function promise() {}
@@ -148,7 +148,7 @@
 		>
 			<Icon name={item.type} />
 
-			<div class="message">{@html item.message}</div>
+			<div class="body">{@html item.body}</div>
 
 			{#if item.show_close_button}
 				{@const id = crypto.randomUUID()}
@@ -231,7 +231,7 @@
 			background-color: var(--alert-failure-background);
 		}
 
-		& .message {
+		& .body {
 			margin-inline: 0.75rem;
 		}
 	}
