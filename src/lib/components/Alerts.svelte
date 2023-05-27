@@ -16,11 +16,12 @@
 			type,
 			message,
 			timeout = opts.timeout,
-			show_dismiss_button = opts.show_dismiss_button
+			show_close_button = opts.show_close_button,
+			style = ''
 		}) {
 			update((alerts) => [
 				...alerts.slice(-1 * (this.max - 1)),
-				{ type, message, timeout, show_dismiss_button }
+				{ type, message, timeout, show_close_button }
 			]);
 		}
 
@@ -42,11 +43,11 @@
 
 		function promise() {}
 
-		function dismiss(alert) {
+		function close(alert) {
 			update((alerts) => alerts.filter((a) => a !== alert));
 		}
 
-		function dismiss_all() {
+		function close_all() {
 			update(() => []);
 		}
 
@@ -58,8 +59,8 @@
 			failure,
 			warning,
 			promise,
-			dismiss,
-			dismiss_all
+			close,
+			close_all
 		};
 	}
 
@@ -111,7 +112,7 @@
 		node.addEventListener('mouseenter', on_mouseenter);
 		node.addEventListener('mouseleave', on_mouseleave);
 
-		timer = create_timer(() => alerts.dismiss(alert), alert.timeout);
+		timer = create_timer(() => alerts.close(alert), alert.timeout);
 
 		return {
 			destroy() {
@@ -126,10 +127,10 @@
 <script>
 	export let max = 3;
 	export let position = 'start';
-	export let show_dismiss_button = false;
+	export let show_close_button = false;
 	export let timeout = 5000;
 
-	const alerts_store = create_alerts_store({ max, show_dismiss_button, timeout });
+	const alerts_store = create_alerts_store({ max, show_close_button, timeout });
 
 	setContext('sunflower:alerts', alerts_store);
 </script>
@@ -139,6 +140,7 @@
 		<div
 			role="alert"
 			class="alert --{item.type}"
+			style={item.style}
 			use:alert={item}
 			in:fly={{ y: 15 * (position === 'start' ? -1 : 1), duration: 200 }}
 			out:scale={{ duration: 200, start: 0.95 }}
@@ -148,14 +150,17 @@
 
 			<div class="message">{@html item.message}</div>
 
-			{#if item.show_dismiss_button}
+			{#if item.show_close_button}
+				{@const id = crypto.randomUUID()}
+
 				<button
 					type="button"
-					aria-label="Dismiss"
-					class="dismiss-btn"
-					on:click={() => alerts_store.dismiss(item)}
+					aria-labelledby={id}
+					class="close-btn"
+					on:click={() => alerts_store.close(item)}
 				>
 					<Icon name="x" />
+					<span {id} hidden>Close</span>
 				</button>
 			{/if}
 		</div>
@@ -184,17 +189,16 @@
 	}
 
 	.alert {
-		--color: white;
+		--alert-color: var(--alert-color, white);
+		--alert-background: ;
 
-		--info-bg-color: hsl(196, 52%, 48%);
-		--success-bg-color: hsl(171, 71%, 40%);
-		--failure-bg-color: hsl(18, 100%, 60%);
-		--warning-bg-color: hsl(333, 81%, 40%);
+		--alert-info-background: var(--alert-info-background, hsl(196, 52%, 48%));
+		--alert-success-background: var(--alert-success-background, hsl(171, 71%, 40%));
+		--alert-failure-background: var(--alert-failure-background, hsl(18, 100%, 60%));
+		--alert-warning-backrgound: var(--alert-warning-background, hsl(333, 81%, 40%));
 
-		color: var(--color);
-		line-height: 1.5;
+		color: var(--alert-color);
 		font-weight: 500;
-		font-family: sans-serif;
 
 		padding: 0.75rem;
 		border-radius: 0.25rem;
@@ -212,46 +216,38 @@
 		}
 
 		&.--info {
-			background-color: var(--info-bg-color);
+			background-color: var(--alert-info-background);
 		}
 
 		&.--success {
-			background-color: var(--info-bg-color);
+			background-color: var(--alert-success-background);
 		}
 
 		&.--warning {
-			background-color: var(--warning-bg-color);
+			background-color: var(--alert-warning-background);
 		}
 
 		&.--failure {
-			background-color: var(--failure-bg-color);
+			background-color: var(--alert-failure-background);
+		}
+
+		& .message {
+			margin-inline: 0.75rem;
 		}
 	}
 
-	.message {
-		margin-inline: 0.75rem;
-	}
-
-	.dismiss-btn {
+	.close-btn {
 		padding: 0.25rem;
 		border: none;
 		margin: 0;
 		appearance: none;
 		display: grid;
 		place-items: center;
-		font: inherit;
-		color: inherit;
 		background: none;
-		cursor: pointer;
 		opacity: 0.8;
 		border-radius: 50%;
 
 		transition: opacity, 100ms;
-
-		& > .icon {
-			font-size: 1rem;
-			stroke-width: 0.2rem;
-		}
 
 		&:hover {
 			opacity: 1;
