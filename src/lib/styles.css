@@ -67,3 +67,27 @@ html:focus-within {
 }
 
 /* Utility Classes */
+
+.button {
+	appearance: none;
+
+	transition: scale 100ms;
+
+	&:hover {
+		filter: brightness(1.1);
+	}
+
+	&:active {
+		scale: 0.98;
+	}
+
+	&.--icon {
+		border: none;
+	}
+
+	&.--primary {
+	}
+
+	&.--secondary {
+	}
+}
