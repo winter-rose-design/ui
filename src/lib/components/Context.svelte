@@ -1,5 +1,5 @@
 <script>
-	import '$lib/styles.css';
+	import '../styles.css';
 
 	/** @param {HTMLElement} node */
 	function js(node) {
