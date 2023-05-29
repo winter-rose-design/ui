@@ -25,20 +25,20 @@
 			]);
 		}
 
-		function info(body, timeout) {
-			show({ type: 'info', body, timeout });
+		function info(body, opts = {}) {
+			show({ type: 'info', body, ...opts });
 		}
 
-		function success(body, timeout) {
-			show({ type: 'success', body, timeout });
+		function success(body, opts = {}) {
+			show({ type: 'success', body, ...opts });
 		}
 
-		function failure(body, timeout) {
-			show({ type: 'failure', body, timeout });
+		function failure(body, opts = {}) {
+			show({ type: 'failure', body, ...opts });
 		}
 
-		function warning(body, timeout) {
-			show({ type: 'warning', body, timeout });
+		function warning(body, opts = {}) {
+			show({ type: 'warning', body, ...opts });
 		}
 
 		function promise() {}
@@ -156,7 +156,7 @@
 				<button
 					type="button"
 					aria-labelledby={id}
-					class="alert__close-btn"
+					class="alert__close-btn button --icon"
 					on:click={() => alerts_store.close(item)}
 				>
 					<Icon name="x" />
@@ -238,10 +238,6 @@
 
 	.alert__close-btn {
 		display: none;
-		padding: 0.25rem;
-		border: none;
-		appearance: none;
-		background: none;
 		opacity: 0.8;
 
 		transition: opacity, 100ms;
