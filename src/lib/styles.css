@@ -1,7 +1,16 @@
 /* Reset */
 
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+}
+
 html,
-body {
+body,
+.ui.container {
 	height: 100%;
 }
 
@@ -12,58 +21,50 @@ html:focus-within {
 .ui {
 	line-height: 1.5;
 	font-family: sans-serif;
+}
 
-	& *,
-	& *::before,
-	& *::after {
-		box-sizing: border-box;
-		padding: 0;
-		margin: 0;
-	}
+.ui a:not([class]) {
+	text-decoration-skip-ink: auto;
+}
 
-	& a:not([class]) {
-		text-decoration-skip-ink: auto;
-	}
+.ui img,
+.ui picture,
+.ui video,
+.ui canvas {
+	display: block;
+	max-width: 100%;
+}
 
-	& img,
-	& picture,
-	& video,
-	& canvas {
-		display: block;
-		max-width: 100%;
-	}
+.ui input,
+.ui button,
+.ui textarea,
+.ui select,
+.ui input[type='file']::file-selector-button {
+	font: inherit;
+}
 
-	& input,
-	& button,
-	& textarea,
-	& select,
-	& input[type='file']::file-selector-button {
-		font: inherit;
-	}
+.ui label,
+.ui textarea,
+.ui progress,
+.ui
+	input:where(
+		[type='email'],
+		[type='password'],
+		[type='search'],
+		[type='tel'],
+		[type='text'],
+		[type='url'],
+		[type='file']
+	) {
+	display: block;
+	width: 100%;
+}
 
-	& label,
-	& textarea,
-	& progress,
-	&
-		input:where(
-			[type='email'],
-			[type='password'],
-			[type='search'],
-			[type='tel'],
-			[type='text'],
-			[type='url'],
-			[type='file']
-		) {
-		display: block;
-		width: 100%;
-	}
-
-	& textarea {
-		box-sizing: content-box;
-		min-height: 5em;
-		resize: block;
-		resize: vertical;
-	}
+.ui textarea {
+	box-sizing: content-box;
+	min-height: 5em;
+	resize: block;
+	resize: vertical;
 }
 
 /* Utility Classes */
@@ -72,22 +73,22 @@ html:focus-within {
 	appearance: none;
 
 	transition: scale 100ms;
+}
 
-	&:hover {
-		filter: brightness(1.1);
-	}
+.button:hover {
+	filter: brightness(1.1);
+}
 
-	&:active {
-		scale: 0.98;
-	}
+.button:active {
+	scale: 0.98;
+}
 
-	&.--icon {
-		border: none;
-	}
+.button.--icon {
+	border: none;
+}
 
-	&.--primary {
-	}
+.button.--primary {
+}
 
-	&.--secondary {
-	}
+.button.--secondary {
 }
