@@ -70,7 +70,7 @@
 		};
 	}
 
-	function create_timer(cb, delay) {
+	function create_timeout(cb, delay) {
 		let start;
 		let timeout_id;
 
@@ -118,7 +118,7 @@
 		node.addEventListener('mouseenter', on_mouseenter);
 		node.addEventListener('mouseleave', on_mouseleave);
 
-		timer = create_timer(() => alerts.close(alert), alert.timeout);
+		timer = create_timeout(() => alerts.close(alert), alert.timeout);
 
 		return {
 			destroy() {
