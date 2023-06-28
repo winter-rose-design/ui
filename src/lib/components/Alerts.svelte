@@ -144,36 +144,36 @@
 </script>
 
 <div class="alerts-stack --{position}">
-	{#each $alerts_store as item (item)}
+	{#each $alerts_store as alert_obj (alert_obj)}
 		<div
 			role="alert"
-			class="alert --{item.type}"
-			style={item.style}
-			use:alert={item}
+			class="alert --{alert_obj.type}"
+			style={alert_obj.style}
+			use:alert={alert_obj}
 			in:fly={{ y: 15 * (position === 'start' ? -1 : 1), duration: 200 }}
 			out:scale={{ duration: 200, start: 0.95 }}
 			animate:flip={{ duration: 200 }}
 		>
-			<Icon name={item.type} />
+			<Icon name={alert_obj.type} />
 
 			<div class="alert__content">
-				{#if item.body}
-					<div class="alert__title">{@html item.title}</div>
+				{#if alert_obj.body}
+					<div class="alert__title">{@html alert_obj.title}</div>
 				{/if}
 
-				{#if item.body}
-					<div class="alert__body">{@html item.body}</div>
+				{#if alert_obj.body}
+					<div class="alert__body">{@html alert_obj.body}</div>
 				{/if}
 			</div>
 
-			{#if item.is_closeable}
+			{#if alert_obj.is_closeable}
 				{@const id = crypto.randomUUID()}
 
 				<button
 					type="button"
 					aria-labelledby={id}
 					class="alert__close-btn button --icon"
-					on:click={() => alerts_store.close(item)}
+					on:click={() => alerts_store.close(alert_obj)}
 				>
 					<Icon name="x" />
 					<span {id} hidden>Close</span>
