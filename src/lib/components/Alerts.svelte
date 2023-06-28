@@ -156,7 +156,15 @@
 		>
 			<Icon name={item.type} />
 
-			<div class="alert__body">{@html item.body}</div>
+			<div class="alert__content">
+				{#if item.body}
+					<div class="alert__title">{@html item.title}</div>
+				{/if}
+
+				{#if item.body}
+					<div class="alert__body">{@html item.body}</div>
+				{/if}
+			</div>
 
 			{#if item.is_closeable}
 				{@const id = crypto.randomUUID()}
