@@ -5,8 +5,14 @@
 	import { writable } from 'svelte/store';
 	import { Icon } from '$lib/components';
 
-	export function get() {
-		return getContext('sunflower:alerts');
+	const context_key = new Symbol();
+
+	function get_context() {
+		return getContext(context_key);
+	}
+
+	function set_context(value) {
+		setContext(context_key, value);
 	}
 
 	function create_alerts_store(opts) {
@@ -17,11 +23,11 @@
 			body,
 			style = '',
 			timeout = opts.timeout,
-			show_close_button = opts.show_close_button
+			is_closeable = opts.is_closeable
 		}) {
 			update((alerts) => [
 				...alerts.slice(-1 * (this.max - 1)),
-				{ type, body, style, timeout, show_close_button }
+				{ type, body, style, timeout, is_closeable }
 			]);
 		}
 
@@ -122,20 +128,22 @@
 			}
 		};
 	}
+
+	export { get_context };
 </script>
 
 <script>
 	export let max = 3;
 	export let position = 'start';
-	export let show_close_button = false;
+	export let is_closeable = false;
 	export let timeout = 5000;
 
-	const alerts_store = create_alerts_store({ max, show_close_button, timeout });
+	const alerts_store = create_alerts_store({ max, is_closeable, timeout });
 
-	setContext('sunflower:alerts', alerts_store);
+	set_context(alerts_store);
 </script>
 
-<div class="alert-container --{position}">
+<div class="alerts-stack --{position}">
 	{#each $alerts_store as item (item)}
 		<div
 			role="alert"
@@ -150,7 +158,7 @@
 
 			<div class="alert__body">{@html item.body}</div>
 
-			{#if item.show_close_button}
+			{#if item.is_closeable}
 				{@const id = crypto.randomUUID()}
 
 				<button
@@ -168,7 +176,7 @@
 </div>
 
 <style>
-	:global(.js) .alert-container {
+	:global(.js) .alerts-stack {
 		position: fixed;
 		display: flex;
 		padding: 0 1em;
@@ -178,12 +186,12 @@
 		pointer-events: none;
 	}
 
-	:global(.js) .alert-container.--start {
+	:global(.js) .alerts-stack.--start {
 		inset-block-start: 0;
 		flex-direction: column-reverse;
 	}
 
-	:global(.js) .alert-container.--end {
+	:global(.js) .alerts-stack.--end {
 		inset-block-end: 0;
 		flex-direction: column;
 	}
