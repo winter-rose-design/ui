@@ -192,16 +192,16 @@
 		left: 0;
 		width: 100%;
 		pointer-events: none;
-	}
 
-	:global(.js) .alerts-stack.--start {
-		inset-block-start: 0;
-		flex-direction: column-reverse;
-	}
+		&.--start {
+			inset-block-start: 0;
+			flex-direction: column-reverse;
+		}
 
-	:global(.js) .alerts-stack.--end {
-		inset-block-end: 0;
-		flex-direction: column;
+		&.--end {
+			inset-block-end: 0;
+			flex-direction: column;
+		}
 	}
 
 	.alert {
@@ -226,26 +226,32 @@
 		box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 
 		transition: scale 100ms;
+
+		&:hover {
+			scale: 1.02;
+		}
+
+		&.--info {
+			background-color: var(--alert-info-background);
+		}
+
+		&.--success {
+			background-color: var(--alert-success-background);
+		}
+
+		&.--warning {
+			background-color: var(--alert-warning-background);
+		}
+
+		&.--failure {
+			background-color: var(--alert-failure-background);
+		}
 	}
 
-	.alert:hover {
-		scale: 1.02;
+	.alert__content {
 	}
 
-	.alert.--info {
-		background-color: var(--alert-info-background);
-	}
-
-	.alert.--success {
-		background-color: var(--alert-success-background);
-	}
-
-	.alert.--warning {
-		background-color: var(--alert-warning-background);
-	}
-
-	.alert.--failure {
-		background-color: var(--alert-failure-background);
+	.alert__title {
 	}
 
 	.alert__body {
@@ -257,18 +263,18 @@
 		opacity: 0.8;
 
 		transition: opacity, 100ms;
+
+		&:hover {
+			opacity: 1;
+			background-color: hsla(0, 0%, 0%, 0.1);
+		}
+
+		&:active {
+			background-color: hsla(0, 0%, 0%, 0.2);
+		}
 	}
 
 	:global(.js) .alert__close-btn {
 		display: inline-block;
-	}
-
-	.alert__close-btn:hover {
-		opacity: 1;
-		background-color: hsla(0, 0%, 0%, 0.1);
-	}
-
-	.alert__close-btn:active {
-		background-color: hsla(0, 0%, 0%, 0.2);
 	}
 </style>
