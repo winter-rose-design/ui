@@ -4,8 +4,8 @@
 	 * @property {string} body - the message to display
 	 * @property {boolean} [is_closeable=true] - whether users can close this alert via a button
 	 * @property {string} [style=''] - CSS inline styles
+	 * @property {number} [timeout=5000] - a duration in milliseconds after which this alert should be automatically closed
 	 * @property {string} [title] - a title displayed above the body
-	 * @property {number} [timeout] - a duration in milliseconds after which the alert should be automatically closed
 	 */
 
 	import { flip } from 'svelte/animate';
@@ -125,7 +125,7 @@
 <script>
 	export let max = 3;
 	export let position = 'start';
-	export let is_closeable = false;
+	export let is_closeable = true;
 	export let timeout = 5000;
 
 	export const alerts_store = create_alerts_store({ max, is_closeable, timeout });
