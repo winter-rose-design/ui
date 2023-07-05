@@ -17,6 +17,9 @@
 
 	const context_key = new Symbol();
 
+	/**
+	 * @returns {}
+	 */
 	function get_context() {
 		return getContext(context_key);
 	}
@@ -25,6 +28,10 @@
 		setContext(context_key, value);
 	}
 
+	/**
+	 * @param cb
+	 * @param {number} delay
+	 */
 	function create_timeout(cb, delay) {
 		let start;
 		let timeout_id;
@@ -80,21 +87,11 @@
 		return {
 			subscribe: subscribe,
 
-			/** @param {AlertObject} */
-			show({
-				type,
-				body,
-				style = '',
-				title = '',
-				timeout = params.timeout,
-				is_closeable = params.is_closeable
-			}) {
-				update((alerts) => [
-					...alerts.slice(-1 * (this.max - 1)),
-					{ type, title, body, style, timeout, is_closeable }
-				]);
+			/** @param {AlertObject} params */
+			show(params) {
+				update((alerts) => [...alerts.slice(-1 * (this.max - 1)), params]);
 			},
-			
+
 			/** @param {AlertObject} alert */
 			close(alert) {
 				update((alerts) => alerts.filter((a) => a !== alert));
