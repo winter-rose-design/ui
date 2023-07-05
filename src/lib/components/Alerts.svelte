@@ -1,6 +1,7 @@
 <script context="module">
 	/**
-	 * @typedef {object} AlertParams
+	 * @typedef {object} AlertObject
+	 * @property {'info' | 'danger' | 'success' | 'warning'} type - the type of alert you want to show
 	 * @property {string} body - the message to display
 	 * @property {boolean} [is_closeable=true] - whether users can close this alert via a button
 	 * @property {string} [style=''] - CSS inline styles
@@ -51,6 +52,10 @@
 		};
 	}
 
+	/**
+	 * @param {HTMLElement} node
+	 * @param {AlertObject} alert
+	 */
 	function alert(node, alert) {
 		if (!alert.timeout) return;
 
@@ -67,19 +72,20 @@
 	}
 
 	/**
-	 * @param param0
+	 * @param params
 	 */
-	function create_alerts_store({}) {
+	function create_alerts_store(params) {
 		const { subscribe, set, update } = writable([]);
 
 		return {
 			subscribe: subscribe,
 
+			/** @param {AlertObject} */
 			show({
 				type,
-				title,
 				body,
 				style = '',
+				title = '',
 				timeout = params.timeout,
 				is_closeable = params.is_closeable
 			}) {
@@ -88,33 +94,14 @@
 					{ type, title, body, style, timeout, is_closeable }
 				]);
 			},
-
-			/** @param {AlertParams} params */
-			info(params) {
-				this.show({ type: 'info', ...params });
-			},
-
-			/** @param {AlertParams} params */
-			success(params) {
-				this.show({ type: 'success', ...params });
-			},
-
-			/** @param {AlertParams} params */
-			danger(params) {
-				this.show({ type: 'danger', ...params });
-			},
-
-			/** @param {AlertParams} params */
-			warning(params) {
-				this.show({ type: 'warning', ...params });
-			},
-
+			
+			/** @param {AlertObject} alert */
 			close(alert) {
 				update((alerts) => alerts.filter((a) => a !== alert));
 			},
 
 			close_all() {
-				update(() => []);
+				set([]);
 			}
 		};
 	}
