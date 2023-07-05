@@ -1,4 +1,13 @@
 <script context="module">
+	/**
+	 * @typedef {object} AlertParams
+	 * @property {string} body - the message to display
+	 * @property {boolean} [is_closeable=true] - whether users can close this alert via a button
+	 * @property {string} [style=''] - CSS inline styles
+	 * @property {string} [title] - a title displayed above the body
+	 * @property {number} [timeout] - a duration in milliseconds after which the alert should be automatically closed
+	 */
+
 	import { flip } from 'svelte/animate';
 	import { fly, scale } from 'svelte/transition';
 	import { setContext, getContext } from 'svelte';
@@ -57,49 +66,58 @@
 		};
 	}
 
-	let store, params;
+	/**
+	 * @param param0
+	 */
+	function create_alerts_store({}) {
+		const { subscribe, set, update } = writable([]);
 
-	const alerts_store = {
-		subscribe: store.subscribe,
+		return {
+			subscribe: subscribe,
 
-		show({
-			type,
-			title,
-			body,
-			style = '',
-			timeout = params.timeout,
-			is_closeable = params.is_closeable
-		}) {
-			store.update((alerts) => [
-				...alerts.slice(-1 * (this.max - 1)),
-				{ type, title, body, style, timeout, is_closeable }
-			]);
-		},
+			show({
+				type,
+				title,
+				body,
+				style = '',
+				timeout = params.timeout,
+				is_closeable = params.is_closeable
+			}) {
+				update((alerts) => [
+					...alerts.slice(-1 * (this.max - 1)),
+					{ type, title, body, style, timeout, is_closeable }
+				]);
+			},
 
-		info(param) {
-			this.show({ type: 'info', ...(typeof param === 'string' ? { body: param } : param) });
-		},
+			/** @param {AlertParams} params */
+			info(params) {
+				this.show({ type: 'info', ...params });
+			},
 
-		success(param) {
-			this.show({ type: 'success', ...(typeof param === 'string' ? { body: param } : param) });
-		},
+			/** @param {AlertParams} params */
+			success(params) {
+				this.show({ type: 'success', ...params });
+			},
 
-		danger(param) {
-			this.show({ type: 'danger', ...(typeof param === 'string' ? { body: param } : param) });
-		},
+			/** @param {AlertParams} params */
+			danger(params) {
+				this.show({ type: 'danger', ...params });
+			},
 
-		warning(param) {
-			this.show({ type: 'warning', ...(typeof param === 'string' ? { body: param } : param) });
-		},
+			/** @param {AlertParams} params */
+			warning(params) {
+				this.show({ type: 'warning', ...params });
+			},
 
-		close(alert) {
-			update((alerts) => alerts.filter((a) => a !== alert));
-		},
+			close(alert) {
+				update((alerts) => alerts.filter((a) => a !== alert));
+			},
 
-		close_all() {
-			update(() => []);
-		}
-	};
+			close_all() {
+				update(() => []);
+			}
+		};
+	}
 
 	export { get_context as get_store };
 </script>
