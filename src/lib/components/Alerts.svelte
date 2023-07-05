@@ -15,61 +15,6 @@
 		setContext(context_key, value);
 	}
 
-	function create_alerts_store(opts) {
-		const { subscribe, update } = writable([]);
-
-		function show({
-			type,
-			body,
-			style = '',
-			timeout = opts.timeout,
-			is_closeable = opts.is_closeable
-		}) {
-			update((alerts) => [
-				...alerts.slice(-1 * (this.max - 1)),
-				{ type, body, style, timeout, is_closeable }
-			]);
-		}
-
-		function info(body, opts = {}) {
-			show({ type: 'info', body, ...opts });
-		}
-
-		function success(body, opts = {}) {
-			show({ type: 'success', body, ...opts });
-		}
-
-		function failure(body, opts = {}) {
-			show({ type: 'failure', body, ...opts });
-		}
-
-		function warning(body, opts = {}) {
-			show({ type: 'warning', body, ...opts });
-		}
-
-		function promise() {}
-
-		function close(alert) {
-			update((alerts) => alerts.filter((a) => a !== alert));
-		}
-
-		function close_all() {
-			update(() => []);
-		}
-
-		return {
-			subscribe,
-
-			info,
-			success,
-			failure,
-			warning,
-			promise,
-			close,
-			close_all
-		};
-	}
-
 	function create_timeout(cb, delay) {
 		let start;
 		let timeout_id;
@@ -100,36 +45,63 @@
 	function alert(node, alert) {
 		if (!alert.timeout) return;
 
-		function on_mouseenter(e) {
-			mouse_over_elements.add(e.target);
-			if (mouse_over_elements.size > 1) return;
-			timer.pause();
-		}
+		const timeout = create_timeout(() => alerts.close(alert), alert.timeout);
 
-		function on_mouseleave(e) {
-			mouse_over_elements.delete(e.target);
-			if (mouse_over_elements.size > 0) return;
-			timer.resume();
-		}
-
-		let mouse_over_elements = new Set();
-		let timer;
-
-		node.addEventListener('mouseenter', on_mouseenter);
-		node.addEventListener('mouseleave', on_mouseleave);
-
-		timer = create_timeout(() => alerts.close(alert), alert.timeout);
+		node.addEventListener('mouseenter', timeout.pause);
+		node.addEventListener('mouseleave', timeout.resume);
 
 		return {
 			destroy() {
-				timer.clear();
-				node.removeEventListener('mouseenter', on_mouseenter);
-				node.removeEventListener('mouseleave', on_mouseleave);
+				timeout.clear();
 			}
 		};
 	}
 
-	export { get_context };
+	let store, params;
+
+	const alerts_store = {
+		subscribe: store.subscribe,
+
+		show({
+			type,
+			title,
+			body,
+			style = '',
+			timeout = params.timeout,
+			is_closeable = params.is_closeable
+		}) {
+			store.update((alerts) => [
+				...alerts.slice(-1 * (this.max - 1)),
+				{ type, title, body, style, timeout, is_closeable }
+			]);
+		},
+
+		info(param) {
+			this.show({ type: 'info', ...(typeof param === 'string' ? { body: param } : param) });
+		},
+
+		success(param) {
+			this.show({ type: 'success', ...(typeof param === 'string' ? { body: param } : param) });
+		},
+
+		danger(param) {
+			this.show({ type: 'danger', ...(typeof param === 'string' ? { body: param } : param) });
+		},
+
+		warning(param) {
+			this.show({ type: 'warning', ...(typeof param === 'string' ? { body: param } : param) });
+		},
+
+		close(alert) {
+			update((alerts) => alerts.filter((a) => a !== alert));
+		},
+
+		close_all() {
+			update(() => []);
+		}
+	};
+
+	export { get_context as get_store };
 </script>
 
 <script>
@@ -138,7 +110,7 @@
 	export let is_closeable = false;
 	export let timeout = 5000;
 
-	const alerts_store = create_alerts_store({ max, is_closeable, timeout });
+	export const alerts_store = create_alerts_store({ max, is_closeable, timeout });
 
 	set_context(alerts_store);
 </script>
@@ -184,12 +156,19 @@
 </div>
 
 <style>
+	.alerts-stack {
+		--wr-alerts-stack-padding-inline: 1rem;
+		--wr-alerts-stack-padding-inline: 1rem;
+
+		display: flex;
+		flex-direction: column;
+	}
+
 	:global(.js) .alerts-stack {
 		position: fixed;
-		display: flex;
 		padding: 0 1em;
 		margin: 0;
-		left: 0;
+		inset-inline-start: 0;
 		width: 100%;
 		pointer-events: none;
 
@@ -205,15 +184,15 @@
 	}
 
 	.alert {
-		--alert-color: var(--alert-color, white);
-		--alert-background: ;
+		--wr-alert-color: var(--wr-alert-color, white);
+		--wr-alert-background: ;
 
-		--alert-info-background: var(--alert-info-background, hsl(196, 52%, 48%));
-		--alert-success-background: var(--alert-success-background, hsl(171, 71%, 40%));
-		--alert-failure-background: var(--alert-failure-background, hsl(18, 100%, 60%));
-		--alert-warning-backrgound: var(--alert-warning-background, hsl(333, 81%, 40%));
+		--wr-alert-info-background: var(--wr-alert-info-background, hsl(196, 52%, 48%));
+		--wr-alert-success-background: var(--wr-alert-success-background, hsl(171, 71%, 40%));
+		--wr-alert-danger-background: var(--wr-alert-danger-background, hsl(18, 100%, 60%));
+		--wr-alert-warning-backrgound: var(--wr-alert-warning-background, hsl(333, 81%, 40%));
 
-		color: var(--alert-color);
+		color: var(--wr-alert-color);
 		font-weight: 500;
 
 		padding: 0.75rem;
@@ -222,29 +201,26 @@
 		margin-inline: auto;
 		display: flex;
 		align-items: center;
+		gap: 0.75rem;
 		pointer-events: auto;
 		box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 
 		transition: scale 100ms;
 
-		&:hover {
-			scale: 1.02;
-		}
-
 		&.--info {
-			background-color: var(--alert-info-background);
+			background-color: var(--wr-alert-info-background);
 		}
 
 		&.--success {
-			background-color: var(--alert-success-background);
+			background-color: var(--wr-alert-success-background);
 		}
 
 		&.--warning {
-			background-color: var(--alert-warning-background);
+			background-color: var(--wr-alert-warning-background);
 		}
 
-		&.--failure {
-			background-color: var(--alert-failure-background);
+		&.--danger {
+			background-color: var(--wr-alert-danger-background);
 		}
 	}
 
@@ -252,10 +228,10 @@
 	}
 
 	.alert__title {
+		font-weight: bold;
 	}
 
 	.alert__body {
-		margin-inline: 0.75rem;
 	}
 
 	.alert__close-btn {
