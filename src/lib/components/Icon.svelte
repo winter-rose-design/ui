@@ -1,34 +1,35 @@
 <script>
 	export let name;
-	export let size = '';
-	export let color = '';
-	export let background = '';
+	export let style = '';
 </script>
 
-<div class="icon" class:--has-background={background} style:background style:color>
+<div class="icon" {style}>
 	<svg aria-hidden="true">
-		<use xlink:href="#ui-icon-{name}" />
+		<use xlink:href="#wr-icon-{name}" />
 	</svg>
 </div>
 
 <style>
 	.icon {
-		border-radius: 50%;
+		--wr-icon-size: var();
+		--wr-icon-color: var();
+		--wr-icon-background: var();
+		--wr-icon-radius: var();
+		--wr-icon-padding: var();
+
 		display: inline-block;
+		border-radius: var(--wr-icon-radius);
 
 		& svg {
 			display: block;
-			inline-size: 1.5em;
-			block-size: 1.5em;
+			inline-size: var(--has-background);
+			block-size: var(--has-background);
+			padding: var(--wr-icon-padding);
 			fill: none;
 			stroke: currentColor;
 			stroke-width: 2;
 			stroke-linecap: round;
 			stroke-linejoin: round;
-		}
-
-		&.--has-background {
-			padding: 0.5em;
 		}
 	}
 </style>
