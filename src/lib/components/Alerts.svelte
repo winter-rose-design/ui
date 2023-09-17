@@ -15,7 +15,7 @@
 	import { writable } from 'svelte/store';
 	import { Icon } from '$lib/components';
 
-	const context_key = new Symbol();
+	const context_key = Symbol();
 
 	/**
 	 * @returns {}
